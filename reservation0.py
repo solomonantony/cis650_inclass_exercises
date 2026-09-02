@@ -40,6 +40,24 @@ elif preferred_date == date2:
 else:
    response = "No availability"
 print(response)
+if response in [101, 102, 103]:
+    if input(f"Room {response} is available for {preferred_date}. Confirm Y/N?") in "Yy":
+        if response == 101 and preferred_date == '09/02/2026':
+            avail11 = False
+        elif response == 102 and preferred_date == '09/02/2026':
+            avail12 = False
+        elif response == 103 and preferred_date == '09/02/2026':
+            avail13 = False
+        elif response == 101 and preferred_date == '09/03/2026':
+            avail21 = False
+        elif response == 102 and preferred_date == '09/03/2026':
+            avail22 = False
+        else:
+            avail23 = False
+        print("Thanks. Confirmation recorded.")
+else:
+    print("Please consider the other facility")
+
 
 
 
