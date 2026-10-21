@@ -38,3 +38,64 @@ print(employees_df[employees_df["salary"]>80000][["name", "department", "salary"
 print(employees_df[(employees_df["department"] == "IT") & (employees_df["years_exp"]>10)][["name", "years_exp"]])
 #6
 print(employees_df[employees_df["name"].str.startswith("A")]["name"])
+#7
+print(employees_df.sort_values(["department", "salary"]))
+#8
+print(employees_df.sort_values(["department", "salary"],ascending=[True,False]))
+#9
+employees_df["monthly_salary"] = (employees_df["salary"]/12).round(2)
+print(employees_df[["salary", "monthly_salary"]])
+#10
+employees_df["senior"] = employees_df["years_exp"] >= 10
+print(employees_df[["name", "years_exp", "senior"]])
+#11
+
+employees_df["name"] = employees_df["name"].str.upper()
+print(employees_df["name"])
+#12
+employees_df["exp_level"] = pd.cut(employees_df["years_exp"],
+                                   bins=[0,5,15,100],
+                                   labels=["Junior","Mid","Senior"],
+                                   right=True)
+print(employees_df[["years_exp", "exp_level"]])
+#13
+employees_df_copy = employees_df.copy()
+#14
+employees_df["department"] = employees_df["department"].fillna("Unknown")
+print(employees_df["department"])
+#15
+print(employees_df.dropna(subset=["salary"]))
+#16
+print(employees_df.dropna())
+#17
+age_mean = employees_df["age"].mean()
+employees_df = employees_df_copy.copy()
+employees_df["age"] = employees_df["age"].fillna(age_mean).round(0)
+print(employees_df[["name", "age"]])
+#18
+salary_median = employees_df["salary"].median()
+employees_df["salary"] = employees_df["salary"].fillna(salary_median)
+print(employees_df["salary"])
+#19
+summary_stats = employees_df.describe().round(0)
+print(summary_stats)
+#20
+print(employees_df["salary"].mean())
+print(employees_df["salary"].median())
+print(employees_df["salary"].max())
+print(employees_df["salary"].min())
+print(employees_df["salary"].std())
+print(employees_df["salary"].quantile(q=0.9))
+#21
+correlations = employees_df[["age", "salary", "years_exp", "rating"]].corr()
+print(correlations)
+#22
+print(employees_df.groupby(["department"]).agg({"salary":"mean"}))
+
+
+
+
+
+
+
+
