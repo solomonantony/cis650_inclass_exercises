@@ -19,7 +19,7 @@ def get_customer(conn, customer_id):
     return dict(row) if row else None
 
 def list_customers(conn):
-    rows = conn.exexcute("SELECT * from customers ORDER BY name").fetchall()
+    rows = conn.execute("SELECT * from customers ORDER BY name").fetchall()
     return [dict(r) for r in rows] # return a list of dictionaries
 
 def update_reservation(conn, reservation_id, room, assigned_date, attendees):
