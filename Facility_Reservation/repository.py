@@ -18,9 +18,17 @@ def get_customer(conn, customer_id):
     row = conn.execute("SELECT * from customers where id = ?", (customer_id,)).fetchone()
     return dict(row) if row else None
 
-def list_customers(conn):
-    rows = conn.execute("SELECT * from customers ORDER BY name").fetchall()
-    return [dict(r) for r in rows] # return a list of dictionaries
+def get_customers(conn):
+    cursor = conn.execute("SELECT * from customers ORDER BY name")
+    columns = [col[0] for col in cursor.description]
+    results = [dict(zip(columns, row)) for row in cursor.fetchall()] # return a list of dictionaries
+    return results
+
+def get_reservations(conn):
+    cursor = conn.execute("Select * from reservations order by id desc")
+    columns = [col[0] for col in cursor.description]
+    results = [dict(zip(columns, row)) for row in cursor.fetchall()] # return a list of dictionaries
+    return results
 
 def update_reservation(conn, reservation_id, room, assigned_date, attendees):
     conn.execute(

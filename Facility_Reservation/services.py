@@ -56,7 +56,7 @@ def update_reservation(conn, reservation_id, requested_room, assigned_date, new_
     
 
 def list_customers(conn):
-    return repository.list_customers(conn)
+    return repository.get_customers(conn)
 
 
 
