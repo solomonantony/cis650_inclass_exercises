@@ -7,3 +7,4 @@ ROOMS = [
     {"Name": "A201", "capacity":60},
 ]
 ROLES = ["scheduler", "marketing", "admin"]
+STATUS = ["Requested", "Assigned", "Cancelled", "Completed"]

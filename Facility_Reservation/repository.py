@@ -6,7 +6,7 @@ def add_customer(conn, name, email, phone):
     conn.commit()
     return cursor.lastrowid
 
-def make_reservation(conn, customer_id, room, request_date, attendees, status):
+def add_reservation(conn, customer_id, room, request_date, attendees, status):
     cursor = conn.execute(
         "INSERT INTO reservations(customer_id, room, request_date, attendees, status) VALUES(?,?,?,?,?)",
         (customer_id, room, request_date, attendees, status)
@@ -17,6 +17,11 @@ def make_reservation(conn, customer_id, room, request_date, attendees, status):
 def get_customer(conn, customer_id):
     row = conn.execute("SELECT * from customers where id = ?", (customer_id,)).fetchone()
     return dict(row) if row else None
+
+def get_customer_by_name(conn, name):
+    row = conn.execute("SELECT * from customers where name = ?", (name,)).fetchone()
+    return dict(row) if row else None
+    
 
 def get_customers(conn):
     cursor = conn.execute("SELECT * from customers ORDER BY name")
@@ -30,11 +35,12 @@ def get_reservations(conn):
     results = [dict(zip(columns, row)) for row in cursor.fetchall()] # return a list of dictionaries
     return results
 
-def update_reservation(conn, reservation_id, room, assigned_date, attendees):
+def update_reservation(conn, reservation_id, room, assigned_date, attendees, status):
     conn.execute(
-        """UPDATE reservations set room = ?, assigned_date= ?, attendees = ? where id = ?""",
-        (room, assigned_date, attendees, reservation_id))
+        """UPDATE reservations set room = ?, assigned_date= ?, attendees = ?, status = ? where id = ?""",
+        (room, assigned_date, attendees, status, reservation_id))
     conn.commit()
+    return True
 
 def set_reservation_status(conn, reservation_id, status):
     conn.execute(
@@ -43,11 +49,16 @@ def set_reservation_status(conn, reservation_id, status):
     conn.commit()
 
 def get_reservation(conn, reservation_id):
-    row = conn.execute("SELECT * from reservation where id =?", (reservation_id,)).fetchone()
-    return dict(row) if row else None
+    cursor = conn.execute("SELECT * from reservations where id =?", (reservation_id,))
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    columns = (col[0] for col in cursor.description)
+    return dict(zip(columns, row))
+
 
 def check_availability(conn, requested_room, request_date):
     row = conn.execute("SELECT * from reservations where assigned_date= ? and room = ?", (request_date, requested_room,)).fetchone()
-    return dict(row) if row else None
+    return False if row else True
 
 

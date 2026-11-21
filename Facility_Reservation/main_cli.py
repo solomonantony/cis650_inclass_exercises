@@ -12,12 +12,12 @@ def add_customer_ui():
     return customer_id
 def request_reservation_ui():
     customer_id = int(input("Customer ID: "))
-    room = input(f"Room {[room['Name'] for room in config.ROOMS]}: ")
+    requested_room = input(f"Room {[room['Name'] for room in config.ROOMS]}: ")
     request_date = dt.datetime.strptime(input("Request date mm/dd/yyyy: "),"%m/%d/%Y")
     attendees = int(input("Attendees: "))
     status = 'Requested'
     conn = db.get_connection()
-    reservation_id = services.request_reservation(conn, customer_id, room, request_date, attendees, status)
+    reservation_id = services.request_reservation(conn, customer_id, requested_room, request_date, attendees, status)
     return reservation_id
 
 def display_menu():
@@ -26,7 +26,6 @@ def display_menu():
             1: Create database
             2: Create a customer
             3: Request a Reservation
-            4. Update a Reservation
             0: Quit
         """)
         user_choice = input("Select your option: ")
